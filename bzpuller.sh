@@ -106,7 +106,7 @@ fi
 sc=$(((${#YEARS[@]} * ${#MONTHS[@]} * ${#DAYS[@]} + 1) / $ZWORKERS))
 
 echo "--------------------------"
-echo "         puller"
+echo "        bzpuller"
 echo "--------------------------"
 echo "aggregation: $aggregation"
 echo "market: $market"
