@@ -6,7 +6,7 @@ If a checksum fails, both the zip file and checksum will be redownloaded and the
 
 I see two main advantages the zips have over Binance's API:
 1. No ratelimits (other than the normal DDoS protection I assume).
-2. Pair data of Spot/Futures symbols that are no longer traded on the exchanged (e.g. Luna).
+2. Symbol data of Spot/Futures symbols that are no longer traded on the exchanged (e.g. Luna).
 
 Unfortunately, it's not all sunshine and roses as the zips are not entirely clean:
 - Some have headers (`open_time,open,high,low,close,volume,close_time,quote_volume,count,taker_buy_volume,taker_buy_quote_volume,ignore`), some don't.
