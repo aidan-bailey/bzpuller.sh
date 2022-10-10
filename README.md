@@ -1,1 +1,1 @@
-# binzip.sh
+# bzpuller.sh
