@@ -19,7 +19,7 @@ If someone can disprove this, please let me know!
 
 ## Usage
 
-``` sh
+``` bash
 $ ./bzpuller.sh
 ----------------------------------------------------------------
                        BINANCE ZIP PULLER
