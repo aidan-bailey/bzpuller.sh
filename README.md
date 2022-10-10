@@ -71,7 +71,9 @@ $ ./bzpuller.sh
 ----------------------------------------------------------------
 ```
 
-## TODO
+## Contribution
+
+This script is not _strenously_ tested so should anyone find any bugs please inform me, thanks!
 
 Add the other markets:
 - [ ] aggTrades
