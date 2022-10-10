@@ -1,7 +1,7 @@
 # bzpuller.sh
 
 This script concurrently downloads and validates checksums of [Binance kline zips](https://data.binance.vision/?prefix=data/).
-It checks all url date combinations, discarding the ones that return 404's (e.g., if you request a symbol not in that market, it'll have a result equivalent to you not requesting that pair at all).
+It checks all url date combinations, discarding the ones that return 404's (e.g., if you request a symbol not in that market, it'll have a result equivalent to you not requesting that symbol at all).
 If a checksum fails, both the zip file and checksum will be redownloaded and the cycle will continue (infinitely) until the checksum succeeds.
 
 I see two main advantages the zips have over Binance's api:
