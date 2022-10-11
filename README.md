@@ -17,7 +17,7 @@ If someone can disprove this, please let me know!
 
 **NB: Be careful about**
 1. Where you run this script (or set `OUTDIR` to) - it will fill that directory with zips and checksums to the point there will be too many files to `rm` using a wildcard and you'll either have to delete the entire directory or delete smaller wildcard batches of them until you can fit the rest into a single wildcard (this doesn't sound fun...and it's less fun than it sounds!).
-2. The values of `SWORKERS` and `ZWORKERS`. The maximum number of subprocesses possibly running at once is $3 + SWORKERS * ZWORKERS$.
+2. The values of `SWORKERS` and `ZWORKERS`. The maximum number of subprocesses running at once is $2 + SWORKERS * ZWORKERS$.
 
 ## Usage
 
