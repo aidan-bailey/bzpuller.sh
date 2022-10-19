@@ -6,7 +6,7 @@ If a checksum fails, both the zip file and checksum will be redownloaded and the
 
 I see two main advantages the zips have over Binance's API:
 1. No ratelimits (other than the normal DDoS protection I assume).
-2. Symbol data of Spot/Futures symbols that are no longer traded on the exchanged (e.g. Luna).
+2. Symbol data of Spot/Futures symbols that are no longer traded on the exchange (e.g. Luna).
 
 Unfortunately, it's not all sunshine and roses as the zips are not entirely clean:
 - Some have headers (`open_time,open,high,low,close,volume,close_time,quote_volume,count,taker_buy_volume,taker_buy_quote_volume,ignore`), some don't.
@@ -17,7 +17,7 @@ If someone can disprove this, please let me know!
 
 **NB: Be careful about**
 1. Where you run this script (or set `OUTDIR` to) - it will fill that directory with zips and checksums to the point there will be too many files to `rm` using a wildcard and you'll either have to delete the entire directory or delete smaller wildcard batches of them until you can fit the rest into a single wildcard (this doesn't sound fun...and it's less fun than it sounds!).
-2. The values of `SWORKERS` and `ZWORKERS`. The maximum number of subprocesses possibly running at once is $3 + SWORKERS * ZWORKERS$.
+2. The values of `SWORKERS` and `ZWORKERS`. The maximum number of subprocesses running at once is $2 + SWORKERS * ZWORKERS$.
 
 ## Usage
 
