@@ -122,7 +122,6 @@ echo "--------------------------"
 download_url() {
   url=$1
   filename="$(basename -- $url)"
-  echo $url
 
   if [ -e "$filename" ]; then
     if [ ! -e "$filename.CHECKSUM" ]; then
