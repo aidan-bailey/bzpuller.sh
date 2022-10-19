@@ -3,9 +3,9 @@
 set -b
 
 if [ $# -lt 2 ]; then
-  echo "----------------------------------------------------------------"
-  echo "                       BINANCE ZIP PULLER"
-  echo "----------------------------------------------------------------"
+  echo "------------------------------------------------------------------------"
+  echo "                           BINANCE ZIP PULLER"
+  echo "------------------------------------------------------------------------"
   echo " USAGE:"
   echo -e "\t   bzpuller.sh <AGGREGATION> <MARKET> <INTERVAL>"
   echo ""
@@ -19,7 +19,7 @@ if [ $# -lt 2 ]; then
   echo "       options: um cm spot"
   echo "   INTERVAL"
   echo "       kline interval"
-  echo "       options: 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h"
+  echo "       options: trades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h"
   echo ""
   echo " ENV VARS:"
   echo ""
@@ -40,39 +40,41 @@ if [ $# -lt 2 ]; then
   echo "       default: (01 02 03 04 05 06 07 08 09 10 11 12)"
   echo "   DAYS"
   echo "       days to fetch"
-  echo "       default: (01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16"
-  echo "                   17 18 19 20 21 22 23 24 25 26 27 28 29 30 31)"
+  echo "       default: (01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18"
+  echo "                               19 20 21 22 23 24 25 26 27 28 29 30 31)"
   echo "   SWORKERS"
   echo "       number of symbols to fetch concurrently"
   echo "       default: half available cores"
   echo "   ZWORKERS"
   echo "       number of zips to fetch concurrently (per symbol)"
   echo "       default: half available cores"
-  echo "----------------------------------------------------------------"
+  echo "------------------------------------------------------------------------"
   exit 0
 fi
 
 aggregation=$1
 if [ $aggregation != "monthly" ] && [ $aggregation != "daily" ]; then
-  echo >&2 "aggregation must be monthly or daily"
+  echo >&2 "aggregation must be trades, monthly or daily"
   exit 1
 fi
 
 market=$2
 if [ "$market" = "spot" ]; then
-  base_url="https://data.binance.vision/data/spot/$aggregation/klines"
+  base_url="https://data.binance.vision/data/spot/$aggregation"
 elif [ "$market" = "cm" ] || [ "$market" == "um" ]; then
-  base_url="https://data.binance.vision/data/futures/$market/$aggregation/klines"
+  base_url="https://data.binance.vision/data/futures/$market/$aggregation"
 else
   echo >&2 "market must be spot, cm or um"
   exit 1
 fi
 
 interval=$3
-intervals="12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h"
+intervals="trades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h"
 if ! [[ $intervals =~ (^|[[:space:]])$interval($|[[:space:]]) ]]; then
   echo >&2 "interval must be in {${intervals[@]}}"
   exit 1
+elif [ $interval != "trades" ]; then
+  base_url = "${baseurl}/klines"
 fi
 
 corecount=$(grep -c '^processor' /proc/cpuinfo)
@@ -114,12 +116,13 @@ echo "interval: $interval"
 echo "out dir: $OUTDIR"
 echo "symbol workers: $SWORKERS"
 echo "zip workers: $ZWORKERS"
-echo "n symbols: ${#SYMBOLS[@]}"
+#echo "n symbols: ${#SYMBOLS[@]}"
 echo "--------------------------"
 
 download_url() {
   url=$1
   filename="$(basename -- $url)"
+  echo $url
 
   if [ -e "$filename" ]; then
     if [ ! -e "$filename.CHECKSUM" ]; then
@@ -166,7 +169,11 @@ process_symbol() {
       for month in ${MONTHS[@]}; do
         for day in ${DAYS[@]}; do
           filename=$symbol-$interval-$year-$month-$day.zip
-          zip_list[${#zip_list[@]}]="$base_url/$symbol/$interval/$filename"
+          if [ $interval != "trades" ]; then
+            zip_list[${#zip_list[@]}]="$base_url/$symbol/$interval/$filename"
+          else
+            zip_list[${#zip_list[@]}]="$base_url/$interval/$symbol/$filename"
+          fi
           if [ ${#zip_list[@]} -eq $sc ]; then
             process_zips "${zip_list[@]}" &
             zip_pids[${#zip_pids[@]}]="$!"
@@ -196,7 +203,11 @@ process_symbol() {
     for year in ${YEARS[@]}; do
       for month in ${MONTHS[@]}; do
         filename=$symbol-$interval-$year-$month.zip
-        zip_list[${#zip_list[@]}]="$base_url/$symbol/$interval/$filename"
+        if [ $interval != "trades" ]; then
+          zip_list[${#zip_list[@]}]="$base_url/$symbol/$interval/$filename"
+        else
+          zip_list[${#zip_list[@]}]="$base_url/$interval/$symbol/$filename"
+        fi
         if [ ${#zip_list[@]} -eq $sc ]; then
           process_zips "${zip_list[@]}" &
           zip_pids[${#zip_pids[@]}]="$!"
@@ -235,7 +246,7 @@ process_symbol() {
 symbol_pids=()
 
 for symbol in ${SYMBOLS[@]}; do
-  if ! [[ -z "$SYMBOL" ]]; then
+  if ! [[ -z "$QUOTE" ]]; then
       if ! [[ "$symbol" =~ ^[0-9A-Z]+$QUOTE$ ]]; then
           continue
       fi

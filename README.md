@@ -1,6 +1,6 @@
 # bzpuller.sh
 
-This script concurrently downloads and validates checksums of [Binance kline zips](https://data.binance.vision/?prefix=data/).
+This script concurrently downloads and validates checksums of [Binance historical data zips](https://data.binance.vision/?prefix=data/).
 It checks all url date combinations, discarding the ones that return 404's (e.g., if you request a symbol not in that market, it'll have a result equivalent to you not requesting that symbol at all).
 If a checksum fails, both the zip file and checksum will be redownloaded and the cycle will continue (infinitely) until the checksum succeeds.
 
@@ -23,9 +23,9 @@ If someone can disprove this, please let me know!
 
 ``` bash
 $ ./bzpuller.sh
-----------------------------------------------------------------
-                       BINANCE ZIP PULLER
-----------------------------------------------------------------
+------------------------------------------------------------------------
+                           BINANCE ZIP PULLER
+------------------------------------------------------------------------
  USAGE:
            bzpuller.sh <AGGREGATION> <MARKET> <INTERVAL>
 
@@ -38,8 +38,8 @@ $ ./bzpuller.sh
        market to pull
        options: um cm spot
    INTERVAL
-       kline interval
-       options: 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h
+       price interval
+       options: trades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h
 
  ENV VARS:
 
@@ -60,27 +60,27 @@ $ ./bzpuller.sh
        default: (01 02 03 04 05 06 07 08 09 10 11 12)
    DAYS
        days to fetch
-       default: (01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16
-                   17 18 19 20 21 22 23 24 25 26 27 28 29 30 31)
+       default: (01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18
+                               19 20 21 22 23 24 25 26 27 28 29 30 31)
    SWORKERS
        number of symbols to fetch concurrently
        default: half available cores
    ZWORKERS
        number of zips to fetch concurrently (per symbol)
        default: half available cores
-----------------------------------------------------------------
+------------------------------------------------------------------------
 ```
 
 ## Contribution
 
-This script is not _strenously_ tested so should anyone find any bugs please inform me, thanks!
+This script is not _strenuously_ tested so should anyone find any bugs please inform me, thanks!
 
 Add other types:
 - [ ] aggTrades
 - [ ] indexPriceKlines
 - [ ] markPriceKlines
 - [ ] premiumIndexKlines
-- [ ] trades
+- [x] trades
 
 Misc:
 - [ ] Reduce code redundancy
