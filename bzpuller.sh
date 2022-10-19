@@ -105,7 +105,11 @@ if [[ -z "$SYMBOLS" ]]; then
   fi
 fi
 
-sc=$(((${#YEARS[@]} * ${#MONTHS[@]} * ${#DAYS[@]} + 1) / $ZWORKERS))
+if [ $aggregation == "daily" ]; then
+  sc=$(((${#YEARS[@]} * ${#MONTHS[@]} * ${#DAYS[@]} + 1) / $ZWORKERS))
+else
+  sc=$(((${#YEARS[@]} * ${#MONTHS[@]} * 1) / $ZWORKERS))
+fi
 
 echo "--------------------------"
 echo "        bzpuller"
@@ -116,7 +120,7 @@ echo "interval: $interval"
 echo "out dir: $OUTDIR"
 echo "symbol workers: $SWORKERS"
 echo "zip workers: $ZWORKERS"
-#echo "n symbols: ${#SYMBOLS[@]}"
+echo "n symbols: ${#SYMBOLS[@]}"
 echo "--------------------------"
 
 download_url() {
