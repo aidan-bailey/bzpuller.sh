@@ -19,7 +19,8 @@ if [ $# -lt 2 ]; then
   echo "       options: um cm spot"
   echo "   INTERVAL"
   echo "       kline interval"
-  echo "       options: trades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h"
+  echo "       options: trades aggTrades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h"
+  echo "                5m 6h 8h"
   echo ""
   echo " ENV VARS:"
   echo ""
@@ -69,12 +70,12 @@ else
 fi
 
 interval=$3
-intervals="trades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h"
+intervals="trades aggTrades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h"
 if ! [[ $intervals =~ (^|[[:space:]])$interval($|[[:space:]]) ]]; then
   echo >&2 "interval must be in {${intervals[@]}}"
   exit 1
-elif [ $interval != "trades" ]; then
-  base_url = "${baseurl}/klines"
+elif [ $interval != "trades" ] && [ $interval != "aggTrades" ]; then
+  base_url="${baseurl}/klines"
 fi
 
 corecount=$(grep -c '^processor' /proc/cpuinfo)
@@ -172,7 +173,7 @@ process_symbol() {
       for month in ${MONTHS[@]}; do
         for day in ${DAYS[@]}; do
           filename=$symbol-$interval-$year-$month-$day.zip
-          if [ $interval != "trades" ]; then
+          if [ $interval != "trades" ] && [ $interval != "aggTrades" ]; then
             zip_list[${#zip_list[@]}]="$base_url/$symbol/$interval/$filename"
           else
             zip_list[${#zip_list[@]}]="$base_url/$interval/$symbol/$filename"
@@ -206,7 +207,7 @@ process_symbol() {
     for year in ${YEARS[@]}; do
       for month in ${MONTHS[@]}; do
         filename=$symbol-$interval-$year-$month.zip
-        if [ $interval != "trades" ]; then
+        if [ $interval != "trades" ] && [ $interval != "aggTrades" ]; then
           zip_list[${#zip_list[@]}]="$base_url/$symbol/$interval/$filename"
         else
           zip_list[${#zip_list[@]}]="$base_url/$interval/$symbol/$filename"

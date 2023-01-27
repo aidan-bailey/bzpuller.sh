@@ -38,8 +38,9 @@ $ ./bzpuller.sh
        market to pull
        options: um cm spot
    INTERVAL
-       price interval
-       options: trades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h 5m 6h 8h
+       kline interval
+       options: trades aggTrades 12h 15m 1d 1h 1m 1mo 1w 2h 30m 3d 3m 4h
+                5m 6h 8h
 
  ENV VARS:
 
@@ -76,7 +77,7 @@ $ ./bzpuller.sh
 This script is not _strenuously_ tested so should anyone find any bugs please inform me, thanks!
 
 Add other types:
-- [ ] aggTrades
+- [x] aggTrades
 - [ ] indexPriceKlines
 - [ ] markPriceKlines
 - [ ] premiumIndexKlines
