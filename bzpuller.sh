@@ -100,9 +100,9 @@ if [[ -z "$ZWORKERS" ]]; then
 fi
 if [[ -z "$SYMBOLS" ]]; then
   if [ $market = "spot" ]; then
-    SYMBOLS=$(curl -s -H 'Content-Type: application/json' https://api.binance.com/api/v1/exchangeInfo | jq -r '.symbols | sort_by(.symbol) | .[] | .symbol')
+    SYMBOLS=( $(curl -s -H 'Content-Type: application/json' https://api.binance.com/api/v1/exchangeInfo | jq -r '.symbols | sort_by(.symbol) | .[] | .symbol') )
   else
-    SYMBOLS=$(curl -s -H 'Content-Type: application/json' https://fapi.binance.com/fapi/v1/exchangeInfo | jq -r '.symbols | sort_by(.symbol) | .[] | .symbol')
+    SYMBOLS=( $(curl -s -H 'Content-Type: application/json' https://fapi.binance.com/fapi/v1/exchangeInfo | jq -r '.symbols | sort_by(.symbol) | .[] | .symbol') )
   fi
 fi
 
